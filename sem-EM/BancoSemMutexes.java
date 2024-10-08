@@ -4,16 +4,25 @@ class ContaBanco {
     private int saldo = 1000; // inicia classe banco com saldo inicial
 
     public void deposito(int quantia) { //Funcao responsavel por realizar o deposito de uma quantia
+        
+        System.out.println(Thread.currentThread().getName() + " - Saldo antes do depósito: " + saldo);
+
         saldo += quantia;
-        System.out.println("Depositado: " + quantia + ", Saldo atual: " + saldo);
+
+        System.out.println(Thread.currentThread().getName() + " - Depositado: " + quantia + ", Saldo atual: " + saldo);
     }
 
     public void retirada(int quantia) { //Funcao responsavel por sacar certa quantia da conta
         if (saldo >= quantia) {
+
             saldo -= quantia;
-            System.out.println("Retirado: " + quantia + ", Saldo atual: " + saldo);
+
+            System.out.println(Thread.currentThread().getName() + " - Retirado: " + quantia + ", Saldo atual: " + saldo);
+
         } else {
-            System.out.println("Tentativa de retirada de " + quantia + " falhou. Saldo atual: " + saldo);
+
+            System.out.println(Thread.currentThread().getName() + " - Tentativa de retirada de " + quantia + " falhou. Saldo atual: " + saldo);
+
         }
     }
 
@@ -40,6 +49,17 @@ public class BancoSemMutexes {
                         conta.deposito(10);
                     } else {
                         conta.retirada(10);
+                    }
+
+                    //Esse try vai criar um atraso de execução entre as threads, a ideia é aumentar a chance de conflitos entre as threads, aumentando a taxa de erro
+                    try {
+
+                        Thread.sleep(random.nextInt(10)); // Atraso aleatório
+
+                    } catch (InterruptedException e) {
+
+                        Thread.currentThread().interrupt();
+                        
                     }
 
                 }
